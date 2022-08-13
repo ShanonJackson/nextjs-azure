@@ -1,0 +1,16 @@
+{
+    "name": "api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "webpack-api-runtime.js",
+    "dependencies": {},
+    "devDependencies": {},
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC"
+}
