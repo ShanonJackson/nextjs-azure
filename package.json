@@ -6,19 +6,23 @@
   "scripts": {
     "dev": "next dev",
     "next-build": "next build",
-    "build": "next build && ts-node ./src/azure",
-    "build:ci": "next build && next export && node ./scripts/dependencies.js && node ./scripts/api.js"
+    "build": "next build && ts-node ./src/azure"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ShanonJackson/nextjs-azure.git"
   },
-  "author": "",
+  "author": "Shanon Jackson @Shanshrew",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ShanonJackson/nextjs-azure/issues"
   },
   "homepage": "https://github.com/ShanonJackson/nextjs-azure#readme",
+  "dependencies": {
+    "next": "^12.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^7.2.0",
@@ -27,14 +31,9 @@
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.25",
     "fast-glob": "^3.2.11",
-    "glob": "^8.0.3",
-    "next": "^12.2.4",
-    "shelljs": "^0.8.5",
+    "fs-extra": "^10.1.0",
     "styled-components": "^5.3.5",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   },
-  "dependencies": {
-    "fs-extra": "^10.1.0"
-  }
 }
