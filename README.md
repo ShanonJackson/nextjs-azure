@@ -17,6 +17,7 @@ npx nextjs-azure
 - 🚧 _middleware [refer to roadmap]
 - 🚧 Image optimization [refer to roadmap]
 - 🚧 Rewrites/Redirects [refer to roadmap]
+- 🚧 Webpack plguin that allows you to have pages/api routes that trigger from native bindings [refer to roadmap]
 - ❓ Localization [refer to roadmap, support = unknown]
 - ❓ AMP [refer to roadmap, support = unknown]
 
