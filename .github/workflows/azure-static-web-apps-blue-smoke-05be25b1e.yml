@@ -21,7 +21,6 @@ jobs:
       - name: 'Install and build'
         shell: bash
         run: |
-          cd ./app
           yarn --ignore-engines
           npm run build
       - name: Build And Deploy
