@@ -13,7 +13,7 @@
                 "delete",
                 "patch"
             ],
-            "route": "api/{*all}"
+            "route": "{*all}"
         },
         {
             "type": "http",
