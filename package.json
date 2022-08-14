@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "next-build": "next build",
-    "build": "next build && next export && ts-node ./src/azure"
+    "build": "next build && ts-node ./src/azure && node ./scripts/swa-router.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,9 @@
     "url": "https://github.com/ShanonJackson/nextjs-azure/issues"
   },
   "homepage": "https://github.com/ShanonJackson/nextjs-azure#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "next": "^12.2.5",
     "react": "^18.2.0",
