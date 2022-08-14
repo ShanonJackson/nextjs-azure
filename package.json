@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
+    "next-build": "next build",
     "build": "next build && ts-node ./src/azure",
     "build:ci": "next build && next export && node ./scripts/dependencies.js && node ./scripts/api.js"
   },

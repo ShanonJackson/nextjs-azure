@@ -14,7 +14,7 @@ npx nextjs-azure
 ### Features
 - ✅ getInitialProps
 - ✅ getServerSideProps
-- 🚧 _middleware [waiting for Azure to have a 0ms cold start offering]
+- 🚧 _middleware [refer to roadmap]
 - 🚧 Image optimization [refer to roadmap]
 - 🚧 Rewrites/Redirects [refer to roadmap]
 - ❓ Localization [refer to roadmap, support = unknown]
@@ -38,7 +38,17 @@ The following IAC setups are coming in the following priority order:
 2. terraform
 
 
+### Goals
+- Offer best in class performance on Azure for hosting NextJS applications - Taking into account best services to use, and endless optimizations for cold start, parse time, download time and more.
+- Feature complete NextJS hosting including _middleware and image optimization.
+- Non-http function app bindings support with in built integration with NextJS (blob bindings, event hub, etc.)
+- Eventually support AWS
+- Eventually support hybrid cloud with cloudflare
+
 ### Bugs:
 - Open an issue. I'll get back to you as soon as I can
+
+### NextJS Advice and Support
+- Just reach out
 
 

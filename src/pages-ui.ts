@@ -46,8 +46,10 @@ export const buildPagesUi = () => {
 		fs.readFileSync('./.next/standalone/.next/build-manifest.json', 'utf8'),
 		'utf8',
 	);
-	fs.cpSync(".next/standalone/node_modules/react-dom", `./${FOLDER_NAME}/node_modules/react-dom`, {recursive: true}); /* adds catch all {*api} route function app */
-	fs.cpSync(".next/standalone/node_modules/next", `./${FOLDER_NAME}/node_modules/next`, {recursive: true}); /* adds catch all {*api} route function app */
+	fs.cpSync(".next/standalone/node_modules/react-dom", `./${FOLDER_NAME}/node_modules/react-dom`, {recursive: true}); /* react-dom always needed */
+	fs.cpSync(".next/standalone/node_modules/styled-jsx", `./${FOLDER_NAME}/node_modules/styled-jsx`, {recursive: true}); /* styled-jsx always needed */
+	fs.cpSync(".next/standalone/node_modules/next", `./${FOLDER_NAME}/node_modules/next`, {recursive: true}); /* next always needed */
+	fs.cpSync(".next/standalone/node_modules/@swc", `./${FOLDER_NAME}/node_modules/@swc`, {recursive: true}); /* next always needed */
 	fs.cpSync("./scripts/ui-function", `./${FOLDER_NAME}/function`, {recursive: true}); /* adds catch all {*api} route function app */
 	fs.cpSync("./scripts/root", `./${FOLDER_NAME}`, {recursive: true}); /* creates package.json for static-web-apps, host.json */
 }

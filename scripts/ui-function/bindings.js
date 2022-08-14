@@ -2,9 +2,6 @@ const staticPages = require('../pages-manifest.json');
 const dynamicPages = require('../routes-manifest.json').dynamicRoutes;
 const Stream = require('stream');
 const http = require('http');
-const {renderToString} = require("react-dom/server");
-const {createElement} = require("react");
-const  { useContext } = require("react");
 const App = require("../pages/_app.js");
 const Document = require("../pages/_document");
 const {renderToHTML} = require("next/dist/server/render");
@@ -29,16 +26,14 @@ module.exports = async (context, req) => {
 	req.query = { ...route.query, ...req.query };
 	const { req: nextreq, res: nextres, promise } = AzureCompat(context, req);
 	const Component = require(route.path).default;
-	const App = require("../pages/_app.js");
-	const Document = require("../pages/_document");
 	const html = await renderToHTML(nextreq, nextres, route.pagePath, req.query, {
 		Document: Document.default,
 		App: App.default,
 		Component,
 		buildManifest: require("../build-manifest.json"),
-		locale: req.headers["accept-language"].split(",")[0]
+		locale: req.headers["accept-language"].split(",")[0],
+		assetPrefix: "",
 	});
-	console.log({html})
 	return {res: { status: 200, body: html.toUnchunkedString(), headers: {"content-type": "text/html"}}};
 };
 
