@@ -1,3 +1,4 @@
+const fs = require("fs");
 const walk = function(dir) {
 	let results = [];
 	const list = fs.readdirSync(dir).filter((dir) => !dir[0].startsWith('_'));
