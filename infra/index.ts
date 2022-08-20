@@ -1,4 +1,4 @@
-import {resources, storage, web} from "@pulumi/azure-native";
+import {resources, storage, web, insights } from "@pulumi/azure-native";
 import {StorageUtils} from "./storage";
 import * as pulumi from '@pulumi/pulumi';
 
@@ -17,11 +17,18 @@ const codeContainer = new storage.BlobContainer('zips', {
 	accountName: storageAccount.name,
 });
 
-const codeBlob = new storage.Blob('zip', {
+const uiBackendCode = new storage.Blob('ui-backend', {
 	resourceGroupName: rg.name,
 	accountName: storageAccount.name,
 	containerName: codeContainer.name,
 	source: new pulumi.asset.FileArchive('../ui-backend'),
+});
+
+const apiBackendCode = new storage.Blob('api-backend', {
+	resourceGroupName: rg.name,
+	accountName: storageAccount.name,
+	containerName: codeContainer.name,
+	source: new pulumi.asset.FileArchive('../api'),
 });
 
 const plan = new web.AppServicePlan('plan', {
@@ -51,8 +58,43 @@ const website = new web.StaticSite("nextjs-demo", {
 	},
 });
 
+const uiBackendAi = new insights.Component('ai', {
+	resourceGroupName: rg.name,
+	kind: 'web',
+	applicationType: insights.ApplicationType.Web,
+});
 
-const app = new web.WebApp('api', {
+const uiBackend = new web.WebApp('ui-backend', {
+	resourceGroupName: rg.name,
+	serverFarmId: plan.id,
+	kind: 'functionapp',
+	siteConfig: {
+		appSettings: [
+			{
+				name: 'APPINSIGHTS_INSTRUMENTATIONKEY',
+				value: uiBackendAi.instrumentationKey,
+			},
+			{
+				name: 'APPLICATIONINSIGHTS_CONNECTION_STRING',
+				value: pulumi.interpolate`InstrumentationKey=${uiBackendAi.instrumentationKey}`,
+			},
+			{
+				name: 'ApplicationInsightsAgent_EXTENSION_VERSION',
+				value: '~2',
+			},
+			{ name: 'AzureWebJobsStorage', value: StorageUtils.connection(rg.name, storageAccount.name) },
+			{ name: 'FUNCTIONS_EXTENSION_VERSION', value: '~4' },
+			{ name: 'FUNCTIONS_WORKER_RUNTIME', value: 'node' },
+			{ name: 'WEBSITE_NODE_DEFAULT_VERSION', value: '~16' },
+			{ name: 'WEBSITE_RUN_FROM_PACKAGE', value: StorageUtils.url(uiBackendCode, codeContainer, storageAccount, rg) },
+		],
+		http20Enabled: true,
+		linuxFxVersion: 'node|16',
+		nodeVersion: '~16',
+	},
+});
+
+const apiBackend = new web.WebApp('api-backend', {
 	resourceGroupName: rg.name,
 	serverFarmId: plan.id,
 	kind: 'functionapp',
@@ -62,7 +104,7 @@ const app = new web.WebApp('api', {
 			{ name: 'FUNCTIONS_EXTENSION_VERSION', value: '~4' },
 			{ name: 'FUNCTIONS_WORKER_RUNTIME', value: 'node' },
 			{ name: 'WEBSITE_NODE_DEFAULT_VERSION', value: '~16' },
-			{ name: 'WEBSITE_RUN_FROM_PACKAGE', value: StorageUtils.url(codeBlob, codeContainer, storageAccount, rg) },
+			{ name: 'WEBSITE_RUN_FROM_PACKAGE', value: StorageUtils.url(apiBackendCode, codeContainer, storageAccount, rg) },
 		],
 		http20Enabled: true,
 		linuxFxVersion: 'node|16',
@@ -70,4 +112,4 @@ const app = new web.WebApp('api', {
 	},
 });
 
-export const url = website.contentDistributionEndpoint;
+export const url = website.defaultHostname;

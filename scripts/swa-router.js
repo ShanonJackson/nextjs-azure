@@ -25,6 +25,10 @@ const config = {
 				rewrite: route,
 			};
 		}),
+		{
+			route: "/users/*",
+			rewrite: "/api/users/*"
+		}
 	],
 	responseOverrides: {
 		'404': {

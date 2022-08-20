@@ -1,17 +1,7 @@
-import {NextPageContext} from "next";
-
-
-export default function Page({hello}: {hello: string})  {
-	console.log(hello)
+export default function Page()  {
 	return (
 		<div>
-			HELLO {hello}
+			HELLO WORLD
 		</div>
 	)
-}
-
-Page.getInitialProps = (ctx: NextPageContext) => {
-	return {
-		hello: Math.random()
-	}
 }

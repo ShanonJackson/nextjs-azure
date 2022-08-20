@@ -21,7 +21,7 @@ module.exports = async (context, req) => {
 			.split('/')
 			.slice(3)
 			.join('/');
-	const route = router(uri);
+	const route = router(uri.startsWith("/api") ? uri.replace("/api", "") : uri);
 	if (!route) return { res: { status: 404 } };
 	req.query = { ...route.query, ...req.query };
 	const { req: nextreq, res: nextres, promise } = AzureCompat(context, req);
