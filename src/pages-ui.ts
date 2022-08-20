@@ -31,21 +31,13 @@ export const buildPagesUi = () => {
 		if(file.includes(`pages/api`)) return; /* not pages/api folder */
 		fs.outputFileSync(file.replace(`./.next/standalone/.next/server`, `./${FOLDER_NAME}`), fs.readFileSync(file), "utf-8");
 	})
-	fs.writeFileSync(
-		`./${FOLDER_NAME}/pages-manifest.json`,
-		fs.readFileSync('./.next/standalone/.next/server/pages-manifest.json', 'utf8'),
-		'utf8',
-	);
-	fs.writeFileSync(
-		`./${FOLDER_NAME}/routes-manifest.json`,
-		fs.readFileSync('./.next/standalone/.next/routes-manifest.json', 'utf8'),
-		'utf8',
-	);
-	fs.writeFileSync(
-		`./${FOLDER_NAME}/build-manifest.json`,
-		fs.readFileSync('./.next/standalone/.next/build-manifest.json', 'utf8'),
-		'utf8',
-	);
+	/* copy manifest files across, these have useful data inside of them for handling routing + propagating some next.config.js options */
+	fs.cpSync('./.next/standalone/.next/server/pages-manifest.json', `./${FOLDER_NAME}/pages-manifest.json`)
+	fs.cpSync('./.next/standalone/.next/routes-manifest.json', `./${FOLDER_NAME}/routes-manifest.json`)
+	fs.cpSync('./.next/standalone/.next/build-manifest.json', `./${FOLDER_NAME}/build-manifest.json`);
+	fs.cpSync('./.next/standalone/.next/required-server-files.json', `./${FOLDER_NAME}/required-server-files.json`)
+
+
 	fs.cpSync(".next/standalone/node_modules/react-dom", `./${FOLDER_NAME}/node_modules/react-dom`, {recursive: true}); /* react-dom always needed */
 	// fs.cpSync(".next/standalone/node_modules/styled-jsx", `./${FOLDER_NAME}/node_modules/styled-jsx`, {recursive: true}); /* styled-jsx always needed */
 	fs.cpSync(".next/standalone/node_modules/next", `./${FOLDER_NAME}/node_modules/next`, {recursive: true}); /* always needed */

@@ -1,4 +1,5 @@
 const staticPages = require('../pages-manifest.json');
+const { config } = require("../required-server-files.json");
 const dynamicPages = require('../routes-manifest.json').dynamicRoutes;
 const Stream = require('stream');
 const http = require('http');
@@ -29,13 +30,17 @@ module.exports = async (context, req) => {
 	const { req: nextreq, res: nextres, promise } = AzureCompat(context, req);
 	const Component = require(route.path).default;
 	const lang =  req.headers["accept-language"];
+
 	const html = await renderToHTML(nextreq, nextres, route.pagePath, req.query, {
 		Document: Document.default,
 		App: App.default,
 		Component,
 		buildManifest: require("../build-manifest.json"),
-		locale: lang ? lang.split(",")[0] : "",
-		assetPrefix: "",
+		locale: lang ? lang.split(",")[0] : config.il18n.defaultLocale,
+		locales: config.il18n.locales,
+		defaultLocale: config.il18n.defaultLocale,
+		basePath: config.basePath,
+		assetPrefix: config.assetPrefix,
 	});
 	return {res: { status: 200, body: html.toUnchunkedString(), headers: {"content-type": "text/html"}}};
 };
