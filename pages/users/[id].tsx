@@ -4,12 +4,12 @@ export default function Page({hello}: {hello: number}) {
 	const router = useRouter();
 	console.log(router.pathname)
 	return (
-		<div>HELLO {hello}</div>
+		<div>hello {hello}</div>
 	)
 }
 
 Page.getInitialProps = () => {
 	return {
-		hello: "GetInitialProps v2"
+		hello: "GetInitialProps v2cache"
 	}
 }
