@@ -38,5 +38,16 @@ const config = {
 	platform: {
 		apiRuntime: 'node:16',
 	},
+	"networking": {
+		"allowedIpRanges": ["AzureFrontDoor.Backend"]
+	},
+	"forwardingGateway": {
+		"requiredHeaders": {
+			"X-Azure-FDID" : "afc102fb-6a05-4abe-abdd-6a563f171384"
+		},
+		"allowedForwardedHosts": [
+			"nextjs-demo-cdn-huc5h0a4gacwhgbn.z01.azurefd.net"
+		]
+	}
 };
 fs.writeFileSync('./out/staticwebapp.config.json', JSON.stringify(config, null, 4));
