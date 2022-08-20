@@ -34,6 +34,9 @@ const config = {
 	platform: {
 		apiRuntime: 'node:16',
 	},
+	globalHeaders: {
+		"cache-control": "public, max-age=604800, immutable"
+	},
 	"networking": {
 		"allowedIpRanges": ["AzureFrontDoor.Backend"]
 	},
