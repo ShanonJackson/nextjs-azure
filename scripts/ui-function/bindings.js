@@ -14,6 +14,8 @@ const router = (path) => {
 };
 
 module.exports = async (context, req) => {
+	context.log("====REQUEST=====");
+	context.log(JSON.stringify(req));
 	const uri =
 		'/' +
 		req.url
