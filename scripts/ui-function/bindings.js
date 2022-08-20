@@ -33,7 +33,7 @@ module.exports = async (context, req) => {
 		App: App.default,
 		Component,
 		buildManifest: require("../build-manifest.json"),
-		locale: req.headers["accept-language"].split(",")[0],
+		locale: req.headers["accept-language"]?.split(",")[0] || "",
 		assetPrefix: "",
 	});
 	return {res: { status: 200, body: html.toUnchunkedString(), headers: {"content-type": "text/html"}}};
