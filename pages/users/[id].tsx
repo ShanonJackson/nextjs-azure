@@ -10,6 +10,6 @@ export default function Page({hello}: {hello: number}) {
 
 Page.getInitialProps = () => {
 	return {
-		hello: "GetInitialProps"
+		hello: "GetInitialProps v2"
 	}
 }
