@@ -1,5 +1,5 @@
 const staticPages = require('../pages-manifest.json');
-const { config } = require("../required-server-files.json");
+const {config} = require("../required-server-files.json");
 const dynamicPages = require('../routes-manifest.json').dynamicRoutes;
 const Stream = require('stream');
 const http = require('http');
@@ -8,9 +8,13 @@ const Document = require("../pages/_document");
 const {renderToHTML} = require("next/dist/server/render");
 
 const router = (path) => {
-	if (staticPages[path]) return { path: '../' + staticPages[path], query: {}, pagePath: staticPages[path]  };
-	const dynamic = dynamicPages.find(({ regex }) => new RegExp(regex, 'i').test(path));
-	if (dynamic) return { path: '../pages' + dynamic.page, query: path.match(dynamic.namedRegex).groups, pagePath: dynamic.page };
+	if (staticPages[path]) return {path: '../' + staticPages[path], query: {}, pagePath: staticPages[path]};
+	const dynamic = dynamicPages.find(({regex}) => new RegExp(regex, 'i').test(path));
+	if (dynamic) return {
+		path: '../pages' + dynamic.page,
+		query: path.match(dynamic.namedRegex).groups,
+		pagePath: dynamic.page
+	};
 	return null;
 };
 
@@ -25,11 +29,11 @@ module.exports = async (context, req) => {
 			.slice(3)
 			.join('/');
 	const route = router(uri.startsWith("/api") ? uri.replace("/api", "") : uri);
-	if (!route) return { res: { status: 404 } };
-	req.query = { ...route.query, ...req.query };
-	const { req: nextreq, res: nextres, promise } = AzureCompat(context, req);
+	if (!route) return {res: {status: 404}};
+	req.query = {...route.query, ...req.query};
+	const {req: nextreq, res: nextres, promise} = AzureCompat(context, req);
 	const Component = require(route.path).default;
-	const lang =  req.headers["accept-language"];
+	const lang = req.headers["accept-language"];
 
 	const html = await renderToHTML(nextreq, nextres, route.pagePath, req.query, {
 		Document: Document.default,
@@ -42,7 +46,13 @@ module.exports = async (context, req) => {
 		basePath: config.basePath,
 		assetPrefix: config.assetPrefix,
 	});
-	return {res: { status: 200, body: html.toUnchunkedString(), headers: {"content-type": "text/html"}}};
+	return {
+		res: {
+			status: 200,
+			body: html.toUnchunkedString(),
+			headers: {"content-type": "text/html", "cache-control": "no-cache"}
+		}
+	};
 };
 
 const AzureCompat = (ctx, req) => {
@@ -112,7 +122,7 @@ const AzureCompat = (ctx, req) => {
 	});
 	if (req.body) request.push(Buffer.from(JSON.stringify(req.body)), undefined);
 	request.push(null);
-	const promise = new Promise(function(resolve) {
+	const promise = new Promise(function (resolve) {
 		res.send = (text) => {
 			if (typeof text === 'object') {
 				res.setHeader('content-type', 'application/json');
@@ -125,5 +135,5 @@ const AzureCompat = (ctx, req) => {
 			resolve(ctx);
 		};
 	});
-	return { req: request, res: res, promise: promise };
+	return {req: request, res: res, promise: promise};
 };
