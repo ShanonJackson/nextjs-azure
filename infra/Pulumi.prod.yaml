@@ -1,4 +1,6 @@
 config:
   azure-native:location: Australia East
+  nextjs-azure:SUBSCRIPTION_ID:
+    secure: AAABAIdWQpIXSmDSxaiYcdwG1pb6agXmc+oCC9UKO4oMl1DOdxIWhSSHUVeJMzfl0BD6skUWsdW0jsQ9qaxpxrElGWs=
   nextjs-azure:gh_token:
     secure: AAABAJijzHxHlavGMBzF9nYZd9y5SmVRtdMWLnOhV9fRfvOa+lzuIZGc5GbBq4RtNKGH5jT6jJTsmcIhyklv3wrH1VO34K5i
