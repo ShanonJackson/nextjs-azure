@@ -19,24 +19,15 @@ const getDependenciesFor = (directory: string): string[] => {
 export const buildPagesApi = () => {
 	if(fs.existsSync('./.next/standalone/.next/server/pages/api')) {
 		/* Gets all dependencies */
-		const dependencies = getDependenciesFor('./.next/standalone/.next/server/pages/api');
-		dependencies.map((depend) => {
+		getDependenciesFor('./.next/standalone/.next/server/pages/api').forEach((depend) => {
 			mkdir(`.${path.sep}api`);
 			const to = `.${path.sep}api${path.sep}` + depend.replace(`.next${path.sep}standalone${path.sep}`, "").replace(`.next${path.sep}server${path.sep}`, "");
-			fs.outputFileSync(to, fs.readFileSync(depend), "utf-8");
-			fs.writeFileSync(
-				'./api/pages-manifest.json',
-				fs.readFileSync('./.next/standalone/.next/server/pages-manifest.json', 'utf8'),
-				'utf8',
-			);
-			fs.writeFileSync(
-				'./api/routes-manifest.json',
-				fs.readFileSync('./.next/standalone/.next/routes-manifest.json', 'utf8'),
-				'utf8',
-			);
-			fs.cpSync("./scripts/function", "./api/function", {recursive: true}); /* adds catch all {*api} route function app */
-			fs.cpSync("./scripts/root", "./api", {recursive: true}); /* creates package.json for static-web-apps, host.json */
+			fs.cpSync(depend, to);
 		});
+		fs.cpSync('./.next/standalone/.next/server/pages-manifest.json', './api/pages-manifest.json')
+		fs.cpSync('./.next/standalone/.next/routes-manifest.json', './api/routes-manifest.json')
+		fs.cpSync("./scripts/function", "./api/function", {recursive: true}); /* adds catch all {*api} route function app */
+		fs.cpSync("./scripts/root", "./api", {recursive: true}); /* creates package.json for static-web-apps, host.json */
 		/* END Gets all dependencies */
 
 		/* copies across raw files, the actual API endpoints */

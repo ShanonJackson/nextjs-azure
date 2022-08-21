@@ -25,7 +25,7 @@ export const buildPagesUi = () => {
 	dependencies.map((depend) => {
 		mkdir(`.${path.sep}${FOLDER_NAME}`);
 		const to = `.${path.sep}${FOLDER_NAME}${path.sep}` + depend.replace(`.next${path.sep}standalone${path.sep}`, "").replace(`.next${path.sep}server`, "");
-		fs.outputFileSync(to, fs.readFileSync(depend), "utf-8");
+		fs.cpSync(to, depend);
 	});
 	glob.sync("./.next/standalone/.next/server/pages/**/*.js").map((file) => {
 		if(file.includes(`pages/api`)) return; /* not pages/api folder */
@@ -39,7 +39,9 @@ export const buildPagesUi = () => {
 
 
 	fs.cpSync(".next/standalone/node_modules/react-dom", `./${FOLDER_NAME}/node_modules/react-dom`, {recursive: true}); /* react-dom always needed */
-	// fs.cpSync(".next/standalone/node_modules/styled-jsx", `./${FOLDER_NAME}/node_modules/styled-jsx`, {recursive: true}); /* styled-jsx always needed */
+	if(fs.existsSync(".next/standalone/node_modules/styled-jsx")) /* styled-jsx always needed */ {
+		fs.cpSync(".next/standalone/node_modules/styled-jsx", `./${FOLDER_NAME}/node_modules/styled-jsx`, {recursive: true});
+	}
 	fs.cpSync(".next/standalone/node_modules/next", `./${FOLDER_NAME}/node_modules/next`, {recursive: true}); /* always needed */
 	fs.cpSync(".next/standalone/node_modules/@swc", `./${FOLDER_NAME}/node_modules/@swc`, {recursive: true}); /* always needed */
 	fs.cpSync(".next/standalone/node_modules/use-sync-external-store", `./${FOLDER_NAME}/node_modules/use-sync-external-store`, {recursive: true}); /* always needed */

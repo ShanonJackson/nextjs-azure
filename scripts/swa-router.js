@@ -42,10 +42,10 @@ const config = {
 	},
 	"forwardingGateway": {
 		"requiredHeaders": {
-			"X-Azure-FDID" : "afc102fb-6a05-4abe-abdd-6a563f171384"
+			"X-Azure-FDID" : "da108622-5865-433c-b465-fb77580f4aea"
 		},
 		"allowedForwardedHosts": [
-			"nextjs-demo-cdn-huc5h0a4gacwhgbn.z01.azurefd.net"
+			"frontend-endpoint.z01.azurefd.net"
 		]
 	}
 };
