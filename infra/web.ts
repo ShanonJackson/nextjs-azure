@@ -44,7 +44,6 @@ const plan = new web.AppServicePlan('plan', {
 
 export const frontend = new web.StaticSite("nextjs-demo", {
 	buildProperties: {
-		apiLocation: "ui-backend",
 		appLocation: "out",
 	},
 	location: "West US 2",
