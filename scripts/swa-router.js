@@ -17,15 +17,14 @@ const walk = function(dir) {
 const config = {
 	routes: [
 		...walk('./out').map((route) => {
+			const isHtml = route.includes(".html");
 			return {
 				route: route
 					.split('.')
 					.slice(0, -1)
 					.join('.'),
 				rewrite: route,
-				"headers": {
-					"Cache-Control": "no-cache"
-				}
+				...(isHtml ? {headers: {"Cache-Control": "no-cache"}} : {})
 			};
 		}),
 	],
