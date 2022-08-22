@@ -8,11 +8,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@pulumi/azure": "^5.14.0",
-    "@pulumi/azure-native": "^1.67.0",
-    "@pulumi/azuread": "^5.26.1",
-    "@pulumi/pulumi": "^3.37.2",
-    "@pulumi/random": "^4.8.2",
+    "@pulumi/azure": "latest",
+    "@pulumi/azure-native": "1.69.0-alpha.1660892740",
+    "@pulumi/azuread": "latest",
+    "@pulumi/pulumi": "latest",
+    "@pulumi/random": "latest",
     "@types/node": "^18.6.3"
   }
 }

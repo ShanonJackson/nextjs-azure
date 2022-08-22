@@ -135,17 +135,17 @@
   resolved "https://registry.yarnpkg.com/@logdna/tail-file/-/tail-file-2.2.0.tgz#158a362d293f940dacfd07c835bf3ae2f9e0455a"
   integrity sha512-XGSsWDweP80Fks16lwkAUIr54ICyBs6PsI4mpfTLQaWgEJRtY9xEV+PeyDpJ+sJEGZxqINlpmAwe/6tS1pP8Ng==
 
-"@pulumi/azure-native@^1.67.0":
-  version "1.67.0"
-  resolved "https://registry.yarnpkg.com/@pulumi/azure-native/-/azure-native-1.67.0.tgz#ade3f6513818bd68c03b0b82f2416ed7ec9d4270"
-  integrity sha512-OV7UjwBamoI14yxYHOJ3xQ061hJeTSBwKqwvG0r1bkIglWNxdigv/pIWq42G36YzPI0GI+2MpBHhHap4HRa9Bg==
+"@pulumi/azure-native@1.69.0-alpha.1660892740":
+  version "1.69.0-alpha.1660892740"
+  resolved "https://registry.yarnpkg.com/@pulumi/azure-native/-/azure-native-1.69.0-alpha.1660892740.tgz#3087fa3420040e478d64912f8379f3333cfa5f8a"
+  integrity sha512-LR9ricV8NYp67nmcFrLWfKbWKfwmfL9+fpjPasIpFk7Jde5gFYOJdNFjNX6nVNApHAlIRViAoeyWDDpc6zyMng==
   dependencies:
     "@pulumi/pulumi" "^3.0.0"
 
-"@pulumi/azure@^5.14.0":
-  version "5.14.0"
-  resolved "https://registry.yarnpkg.com/@pulumi/azure/-/azure-5.14.0.tgz#69b43bb7207ce3f0be4a56add275e10528fa208f"
-  integrity sha512-WSPUekV0N5JarRs9/+1HOm94BypUsa+EPJxj8f0NCAPr9+5pYDr6eXHDQmDi6Ytj+U3pDezClCxkoyerqm0Daw==
+"@pulumi/azure@latest":
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/azure/-/azure-5.16.0.tgz#e99daf788119c0c0e9c1f3bfc39e3883578a5f8e"
+  integrity sha512-YN2neZ/5U9AQKAGIfFl0lIJIi9oiidegFF9P6iUJlS0RVLSjAxZ+WzuzRXoL5JH5op4Y0QDoKTU6J/Nvi37Hdw==
   dependencies:
     "@azure/eventgrid" "^4.6.0"
     "@azure/functions" "=1.2.2"
@@ -153,20 +153,41 @@
     "@azure/ms-rest-nodeauth" "^3.0.0"
     "@pulumi/pulumi" "^3.0.0"
     azure-functions-ts-essentials "^1.3.2"
-    moment "2.29.2"
+    moment "2.29.4"
     node-fetch "^2.3.0"
 
-"@pulumi/azuread@^5.26.1":
-  version "5.26.1"
-  resolved "https://registry.yarnpkg.com/@pulumi/azuread/-/azuread-5.26.1.tgz#f44b84236ff7b916c642932001f36cc88a9cb4b4"
-  integrity sha512-2SgZIuN0mH0rKDJ/5YLNd6ptSHtu8G3wMZq8td1y3iFnKLHM5euOo+Q3R26AYJKSDQP8cR69XaclGMf7MfacJg==
+"@pulumi/azuread@latest":
+  version "5.27.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/azuread/-/azuread-5.27.0.tgz#a2c92e26abbbac9bde0d9afb3fd61ed8729ba473"
+  integrity sha512-Qk6eFDXRWQe5emO7QZ/vyodWEFG+EVKgbRziEYH0bO1smxJmjM53RDDpfaKM1oOZxU4n3oHWMQPbxeD8sO0JNA==
   dependencies:
     "@pulumi/pulumi" "^3.0.0"
 
-"@pulumi/pulumi@^3.0.0", "@pulumi/pulumi@^3.37.2":
+"@pulumi/pulumi@^3.0.0":
   version "3.37.2"
   resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-3.37.2.tgz#8cf944b02d151c25a00bc28c71e270c22c9b0f6e"
   integrity sha512-W+/zV46Ma3x3StkfI3q8bp5agV5/92tI4qoSIQQGK/6sHt1ON/07YEQBAkZE5sGXmu/mM11dg7OMEIEz/GrygA==
+  dependencies:
+    "@grpc/grpc-js" "~1.3.8"
+    "@logdna/tail-file" "^2.0.6"
+    "@pulumi/query" "^0.3.0"
+    google-protobuf "^3.5.0"
+    ini "^2.0.0"
+    js-yaml "^3.14.0"
+    minimist "^1.2.6"
+    normalize-package-data "^2.4.0"
+    read-package-tree "^5.3.1"
+    require-from-string "^2.0.1"
+    semver "^6.1.0"
+    source-map-support "^0.5.6"
+    ts-node "^7.0.1"
+    typescript "~3.7.3"
+    upath "^1.1.0"
+
+"@pulumi/pulumi@latest":
+  version "3.38.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-3.38.0.tgz#8f1a1512670f5426be58ee97997723c0a921737d"
+  integrity sha512-gT6Si48/vCciYelDSG/mpc0jTFprWHhLMANX/IwM3pjDjBNSBgtj4+zDiWIGqSY35fkO2P0E7qBr4hDVE2tEdA==
   dependencies:
     "@grpc/grpc-js" "~1.3.8"
     "@logdna/tail-file" "^2.0.6"
@@ -189,7 +210,7 @@
   resolved "https://registry.yarnpkg.com/@pulumi/query/-/query-0.3.0.tgz#f496608e86a18c3dd31b6c533408e2441c29071d"
   integrity sha512-xfo+yLRM2zVjVEA4p23IjQWzyWl1ZhWOGobsBqRpIarzLvwNH/RAGaoehdxlhx4X92302DrpdIFgTICMN4P38w==
 
-"@pulumi/random@^4.8.2":
+"@pulumi/random@latest":
   version "4.8.2"
   resolved "https://registry.yarnpkg.com/@pulumi/random/-/random-4.8.2.tgz#d2654416f973a29a8ff439cd03449b6a08bd8e59"
   integrity sha512-XDQ2OV+VW5Bpn9nxVqsEiKD3DAEeMd8ngZPLpioJWCiHzsBMSrYfP97MkdGDaBsDvS6/NL1Bvk0VQXXooFl3Yw==
@@ -762,10 +783,10 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.6"
 
-moment@2.29.2:
-  version "2.29.2"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.2.tgz#00910c60b20843bcba52d37d58c628b47b1f20e4"
-  integrity sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg==
+moment@2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 ms@2.1.2:
   version "2.1.2"
