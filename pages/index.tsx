@@ -1,7 +1,7 @@
 export default function Page()  {
 	return (
 		<div>
-			HELLO WORLD
+			HELLO world
 		</div>
 	)
 }
