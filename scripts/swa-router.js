@@ -23,6 +23,9 @@ const config = {
 					.slice(0, -1)
 					.join('.'),
 				rewrite: route,
+				"headers": {
+					"Cache-Control": "no-cache"
+				}
 			};
 		}),
 	],

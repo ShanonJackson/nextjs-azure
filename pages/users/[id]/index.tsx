@@ -7,3 +7,9 @@ export default function Page({hello}: {hello: number}) {
 		<div>hello {hello}</div>
 	)
 }
+
+Page.getInitialProps = () => {
+	return {
+		hello: "users/[id] getInitialProps"
+	}
+}

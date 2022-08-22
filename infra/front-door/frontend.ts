@@ -51,56 +51,27 @@ const redirects_rule_api = new cdn.Rule("api-redirect", {
 
 
 // I.E /users/[id] with getInitialProps or getServerSideProps
-const dynamicServerRendered = routes.filter(([key, value]) => {
-	return !key.startsWith("/api") && !value.endsWith(".html") && key.includes("[") && key.includes("]")
-}).map(([key]) => key.replace(/\[(.*?)\]/gm, "*"));
+
 
 // I.E /users/profile with getInitialProps or getServerSideProps
 const staticServerRendered = routes.filter(([key, value]) => {
 	return !key.startsWith("/api") && !value.endsWith(".html") && !key.includes("[") && !key.includes("]")
 }).map(([key]) => key.replace(/\[(.*?)\]/gm, "*")).filter((key) => !key.startsWith("/_") /* not a private route */);
 
+const dynamicServerRendered = routes.filter(([key, value]) => {
+	return !key.startsWith("/api") && !value.endsWith(".html") && key.includes("[") && key.includes("]")
+}).map(([key]) => key.replace(/\[(.*?)\]/gm, "*"));
 
-const redirects_rule_dynamic = new cdn.Rule("dynamic-redirects", {
-	ruleName: "dynamicredirects",
-	actions: [{
-		name: "RouteConfigurationOverride",
-		parameters: {
-			originGroupOverride: {
-				forwardingProtocol: "HttpsOnly",
-				originGroup: {
-					id: ui_backend_origin_group.id
-				},
-			},
-			typeName: "DeliveryRuleRouteConfigurationOverrideActionParameters"
+
+export const dynamic_route_server_rendered = chunk(dynamicServerRendered, 250).map((set, i) => {
+	console.log(JSON.stringify(set, null, 4))
+	const groups = chunk(set, 10); /* groups of 10 dynamic routes at a time */
+	return RuleUtils.set("DynamicRouteBackendServer", i, groups.map((group) => {
+		return {
+			action: {type: "ORIGIN_CHANGE" as const, id: ui_backend_origin_group.id},
+			conditions: [{operator: "Wildcard" as const, value: group}]
 		}
-	}],
-	order: 2,
-	profileName: frontdoor.name,
-	resourceGroupName: rg.name,
-	ruleSetName: dynamic_pages_rule_set.name,
-	conditions: [
-		{
-			name: "UrlPath",
-			parameters: {
-				matchValues: dynamicServerRendered.length ? dynamicServerRendered : ["/_needs_atleast_one_value/*"],
-				operator: "Wildcard",
-				transforms: [],
-				typeName: "DeliveryRuleUrlPathMatchConditionParameters",
-				negateCondition: false
-			}
-		},
-		{
-			name: "UrlPath",
-			parameters: {
-				matchValues: ["/_next"],
-				operator: "BeginsWith",
-				transforms: [],
-				typeName: "DeliveryRuleUrlPathMatchConditionParameters",
-				negateCondition: true
-			}
-		},
-	]
+	}));
 });
 
 const redirects_rule_static = new cdn.Rule("static-server-redirects", {
@@ -154,10 +125,10 @@ export const dynamic_route_static_server_rules = chunk(dynamicRouteStaticRendere
 	return RuleUtils.set("DynamicRoutesStaticServer", i, set.map((url) => {
 		const wildcarded = url.replace(/\[(.*?)\]/gm, "*");
 		return {
-			action: {type: "REWRITE", from: wildcarded, to: url},
+			action: {type: "REWRITE", from: "/", to: url},
 			conditions: [{operator: "Wildcard", value: [wildcarded]}]
 		}
-	}))
+	}), false)
 });
 
 
@@ -216,5 +187,8 @@ const frontend_origin_route = new cdn.Route("frontend-route", {
 	originGroup: {
 		id: frontend_origin_group.id,
 	},
-	ruleSets: [{id: dynamic_pages_rule_set.id}].concat(dynamic_route_static_server_rules.map((rule) => ({id: rule.id})))
+	ruleSets: [{id: dynamic_pages_rule_set.id}, ...[...dynamic_route_static_server_rules, ...dynamic_route_server_rendered].map((rule) => ({id: rule.id}))],
+	cacheConfiguration: {
+		queryStringCachingBehavior: "UseQueryString"
+	}
 }, {dependsOn: [frontend_origin]});

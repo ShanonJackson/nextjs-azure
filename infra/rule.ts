@@ -1,8 +1,9 @@
 import * as cdn from "@pulumi/azure-native/cdn/v20210601";
 import {frontdoor} from "./front-door/front-door";
 import {rg} from "./resource-group";
+import {Output} from "@pulumi/pulumi";
 
-type OriginChange = { type: "ORIGIN_CHANGE", id: string }
+type OriginChange = { type: "ORIGIN_CHANGE", id: Output<string> }
 type Rewrite = { type: "REWRITE", from: string, to: string }
 
 interface IRule {
@@ -12,11 +13,11 @@ interface IRule {
 
 /* avoids 1000's of lines of boilerplate to create rules */
 export class RuleUtils {
-	static set = (prefix: string, index: number, rules: IRule[]) => {
-		const set = new cdn.RuleSet(`${prefix}${index}`, {
+	static set = (prefix: string, index: number, rules: IRule[], ongoing: boolean = true) => {
+		const set = new cdn.RuleSet(`${prefix}i${index}`, {
 			profileName: frontdoor.name,
 			resourceGroupName: rg.name,
-			ruleSetName: `${prefix}${index}`
+			ruleSetName: `${prefix}i${index}`
 		});
 		rules.forEach((rule, i) => {
 			const action = (() => {
@@ -63,16 +64,25 @@ export class RuleUtils {
 					}
 				});
 			})();
-
 			/* creates the actual rule */
-			new cdn.Rule(`${prefix}-rule${i}`, {
-				ruleName: `${prefix}-rule${i}`,
+			new cdn.Rule(`${prefix}i${index}Rule${i}`, {
+				ruleName: `${prefix}i${index}Rule${i}`,
 				actions: [action],
 				order: i + 1,
+				matchProcessingBehavior: ongoing ? "Continue" : "Stop",
 				profileName: frontdoor.name,
 				resourceGroupName: rg.name,
 				ruleSetName: set.name,
-				conditions: conditions
+				conditions: [...conditions, {
+					name: "UrlPath",
+					parameters: {
+						matchValues: ["/_next"],
+						operator: "BeginsWith",
+						transforms: [],
+						typeName: "DeliveryRuleUrlPathMatchConditionParameters",
+						negateCondition: true
+					}
+				}]
 			})
 		});
 		return set;

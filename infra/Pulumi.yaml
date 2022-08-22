@@ -1,4 +1,4 @@
 name: nextjs-azure
 runtime: nodejs
-description: Infra for spark-iot-ui
+description: NextJS web app
 location: Australia East

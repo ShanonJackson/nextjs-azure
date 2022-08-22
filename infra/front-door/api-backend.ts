@@ -56,5 +56,6 @@ const api_backend_route = new cdn.Route("api-backend-route", {
 	originGroup: {
 		id: api_backend_origin_group.id,
 	},
-	ruleSets: []
+	ruleSets: [],
+	queryStringCachingBehavior: "UseQueryString",
 }, {dependsOn: [api_backend_origin]});
