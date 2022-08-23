@@ -8,6 +8,7 @@ import {chunk} from "../chunk";
 import {RuleUtils} from "../rule";
 
 const routes: Array<[string, string]> = Object.entries(require("../../ui-backend/pages-manifest.json"));
+const {dynamicRoutes: dynamic} = require("../../ui-backend/routes-manifest.json") as { dynamicRoutes: Array<{ page: string, regex: string, namedRegex: string }> }
 
 /* create rule sets */
 const dynamic_pages_rule_set = new cdn.RuleSet("redirects", {
@@ -60,16 +61,18 @@ const staticServerRendered = routes.filter(([key, value]) => {
 
 const dynamicServerRendered = routes.filter(([key, value]) => {
 	return !key.startsWith("/api") && !value.endsWith(".html") && key.includes("[") && key.includes("]")
-}).map(([key]) => key.replace(/\[(.*?)\]/gm, "*"));
+}).map(([_, value]) => {
+	const route = dynamic.find(({page}) => page === value.replace("pages", "").replace(".js", "").replace(".html", ""))
+	if(!route) return null;
+	return route.regex.replace("^/", "^"); /* preceding / wont match */
+}).filter((v): v is string => Boolean(v))
 
 
-export const dynamic_route_server_rendered = chunk(dynamicServerRendered, 250).map((set, i) => {
-	console.log(JSON.stringify(set, null, 4))
-	const groups = chunk(set, 10); /* groups of 10 dynamic routes at a time */
-	return RuleUtils.set("DynamicRouteBackendServer", i, groups.map((group) => {
+export const dynamic_route_server_rendered = chunk(dynamicServerRendered, 25).map((set, i) => {
+	return RuleUtils.set("DynamicRouteBackendServer", i, set.map((url) => {
 		return {
 			action: {type: "ORIGIN_CHANGE" as const, id: ui_backend_origin_group.id},
-			conditions: [{operator: "Wildcard" as const, value: group}]
+			conditions: [{operator: "RegEx" as const, value: [url]}]
 		}
 	}));
 });
@@ -102,31 +105,24 @@ const redirects_rule_static = new cdn.Rule("static-server-redirects", {
 				typeName: "DeliveryRuleUrlPathMatchConditionParameters",
 				negateCondition: false
 			}
-		},
-		{
-			name: "UrlPath",
-			parameters: {
-				matchValues: ["/_next"],
-				operator: "BeginsWith",
-				transforms: [],
-				typeName: "DeliveryRuleUrlPathMatchConditionParameters",
-				negateCondition: true
-			}
-		},
+		}
 	]
 });
 
 // I.E /users/[id] WITHOUT getInitialProps or getServerSideProps
 const dynamicRouteStaticRendered = routes.filter(([key, value]) => {
 	return !key.startsWith("/api") && value.endsWith(".html") && key.includes("[") && key.includes("]")
-}).map(([key]) => key);
+}).map(([key, value]) => {
+	const route = dynamic.find(({page}) => page === value.replace("pages", "").replace(".js", "").replace(".html", ""))
+	if(!route) return null;
+	return {url: key, regex: route.regex.replace("^/", "^")}; /* preceding / wont match */
+}).filter((v): v is NonNullable<typeof v> => Boolean(v))
 
 export const dynamic_route_static_server_rules = chunk(dynamicRouteStaticRendered, 25).map((set, i) => {
-	return RuleUtils.set("DynamicRoutesStaticServer", i, set.map((url) => {
-		const wildcarded = url.replace(/\[(.*?)\]/gm, "*");
+	return RuleUtils.set("DynamicRoutesStaticServer", i, set.map(({url, regex}) => {
 		return {
 			action: {type: "REWRITE", from: "/", to: url},
-			conditions: [{operator: "Wildcard", value: [wildcarded]}]
+			conditions: [{operator: "RegEx", value: [regex]}]
 		}
 	}), false)
 });

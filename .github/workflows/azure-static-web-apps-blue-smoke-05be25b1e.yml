@@ -34,6 +34,13 @@ jobs:
           skip_app_build: true
           skip_api_build: true
           output_location: "" # Built app content directory - optional
+      - name: Deployslot ui-backend
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: 'ui-backendbaa07801'
+          slot-name: 'production'
+          package: './ui-backend'
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest

@@ -7,7 +7,7 @@ type OriginChange = { type: "ORIGIN_CHANGE", id: Output<string> }
 type Rewrite = { type: "REWRITE", from: string, to: string }
 
 interface IRule {
-	conditions: Array<{ operator: "Equal" | "Wildcard", value: string[], negative?: boolean }>
+	conditions: Array<{ operator: "Equal" | "Wildcard" | "RegEx", value: string[], negative?: boolean }>
 	action: OriginChange | Rewrite
 }
 
@@ -69,20 +69,11 @@ export class RuleUtils {
 				ruleName: `${prefix}i${index}Rule${i}`,
 				actions: [action],
 				order: i + 1,
-				matchProcessingBehavior: ongoing ? "Continue" : "Stop",
+				matchProcessingBehavior: "Stop",
 				profileName: frontdoor.name,
 				resourceGroupName: rg.name,
 				ruleSetName: set.name,
-				conditions: [...conditions, {
-					name: "UrlPath",
-					parameters: {
-						matchValues: ["/_next"],
-						operator: "BeginsWith",
-						transforms: [],
-						typeName: "DeliveryRuleUrlPathMatchConditionParameters",
-						negateCondition: true
-					}
-				}]
+				conditions: conditions
 			})
 		});
 		return set;
