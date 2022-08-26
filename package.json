@@ -2,11 +2,15 @@
   "name": "nextjs-azure",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bin/index.js",
+  "bin": {
+    "nextjs-azure": "bin/index.js"
+  },
   "scripts": {
     "dev": "next dev",
     "next-build": "next build",
-    "build": "next build && next export && ts-node ./src/azure && node ./scripts/swa-router.js"
+    "build": "next build && next export && ts-node ./src/azure && node ./scripts/swa-router.js",
+    "build-deploy": "npm run build && cd ./infra && pulumi up"
   },
   "repository": {
     "type": "git",

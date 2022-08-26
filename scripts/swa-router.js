@@ -17,16 +17,26 @@ const walk = function(dir) {
 const config = {
 	routes: [
 		...walk('./out').map((route) => {
-			const isHtml = route.includes(".html");
 			return {
 				route: route
 					.split('.')
 					.slice(0, -1)
 					.join('.'),
 				rewrite: route,
-				...(isHtml ? {headers: {"Cache-Control": "no-cache"}} : {})
 			};
 		}),
+		{
+			route: "/*.js",
+			headers: {
+				"cache-control": "public, max-age=604800, immutable"
+			},
+		},
+		{
+			route: "/*.css",
+			headers: {
+				"cache-control": "public, max-age=604800, immutable"
+			},
+		}
 	],
 	responseOverrides: {
 		'404': {
@@ -35,9 +45,6 @@ const config = {
 	},
 	platform: {
 		apiRuntime: 'node:16',
-	},
-	globalHeaders: {
-		"cache-control": "public, max-age=604800, immutable"
 	},
 	"networking": {
 		"allowedIpRanges": ["AzureFrontDoor.Backend"]
