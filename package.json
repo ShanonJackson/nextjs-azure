@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "next-build": "next build",
+    "build:package": "tsc",
     "build": "next build && next export && ts-node ./src/azure && node ./scripts/swa-router.js",
     "build-deploy": "npm run build && cd ./infra && pulumi up"
   },
