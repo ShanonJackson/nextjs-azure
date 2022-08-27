@@ -32,19 +32,22 @@ module.exports = async (context, req) => {
 	if (!route) return {res: {status: 404}};
 	req.query = {...route.query, ...req.query};
 	const {req: nextreq, res: nextres, promise} = AzureCompat(context, req);
-	const Component = require(route.path).default;
+	const Component = require(route.path);
 	const lang = req.headers["accept-language"];
 
 	const html = await renderToHTML(nextreq, nextres, route.pagePath, req.query, {
 		Document: Document.default,
 		App: App.default,
-		Component,
+		Component: Component.default,
 		buildManifest: require("../build-manifest.json"),
-		locale: lang ? lang.split(",")[0] : config.il18n.defaultLocale,
-		locales: config.il18n.locales,
-		defaultLocale: config.il18n.defaultLocale,
+		locale: lang ? lang.split(",")[0] : config.i18n.defaultLocale || "en-US",
+		locales: config.i18n ? config.i18n.locales : [],
+		defaultLocale: config.i18n ? config.i18n.defaultLocale : "en-US",
 		basePath: config.basePath,
 		assetPrefix: config.assetPrefix,
+		getServerSideProps: Component.getServerSideProps,
+		getStaticProps: Component.getStaticProps,
+		getStaticPaths: Component.getStaticPaths,
 	});
 	return {
 		res: {

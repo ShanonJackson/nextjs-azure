@@ -5,3 +5,6 @@ public/
 out/
 ui-backend/
 api-backend/
+node_modules/
+infra/node_modules/
+.npmrc

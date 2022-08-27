@@ -110,7 +110,7 @@ export const uiBackend = new web.WebApp('ui-backend', {
 			{ name: 'FUNCTIONS_WORKER_RUNTIME', value: 'node' },
 			{ name: 'WEBSITE_NODE_DEFAULT_VERSION', value: '~16' },
 			{ name: 'WEBSITE_RUN_FROM_PACKAGE', value: StorageUtils.url(uiBackendCode, codeContainer, storageAccount, rg) },
-			{ name: "VERSION", value: "2"}
+			{ name: "VERSION", value: "6"}
 		],
 		http20Enabled: true,
 		linuxFxVersion: 'node|16',

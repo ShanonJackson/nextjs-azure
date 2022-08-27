@@ -1,6 +1,6 @@
 {
   "name": "nextjs-azure",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "",
   "main": "bin/index.js",
   "bin": {
@@ -9,10 +9,10 @@
   "scripts": {
     "dev": "next dev",
     "next-build": "next build",
-    "build:package": "tsc --p tsconfig.package.json && node ./scripts/copy-scripts",
+    "build:package": "tsc --p tsconfig.package.json && node ./src/scripts/copy-scripts",
     "build": "next build",
-    "prepublishOnly": "node ./scripts/prepublish.js",
-    "build-deploy": "npm run build && cd ./infra && pulumi up"
+    "prepublishOnly": "node ./src/scripts/prepublish.js",
+    "build-deploy": "npm run build && ts-node ./src/build && cd ./infra && pulumi up"
   },
   "repository": {
     "type": "git",
@@ -28,9 +28,8 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "next": "^12.2.5",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "fast-glob": "^3.2.11",
+    "fs-extra": "^10.1.0"
   },
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
@@ -39,8 +38,9 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@types/styled-components": "^5.1.25",
-    "fast-glob": "^3.2.11",
-    "fs-extra": "^10.1.0",
+    "next": "^12.2.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "styled-components": "^5.3.5",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
