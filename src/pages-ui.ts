@@ -19,6 +19,10 @@ const getDependenciesFor = (directory: string): string[] => {
 	})
 	return Array.from(dependencies);
 }
+
+const join = (relative: string) => {
+	return path.join(__dirname, relative);
+}
 export const buildPagesUi = () => {
 	const dependencies = getDependenciesFor('./.next/standalone/.next/server/pages')
 	/* add all dependencies */
@@ -57,8 +61,10 @@ export const buildPagesUi = () => {
 		fs.cpSync(".next/standalone/node_modules/styled-jsx", `./${FOLDER_NAME}/node_modules/styled-jsx`, {recursive: true});
 	}
 	fs.cpSync(".next/standalone/node_modules/next", `./${FOLDER_NAME}/node_modules/next`, {recursive: true}); /* always needed */
-	fs.cpSync(".next/standalone/node_modules/@swc", `./${FOLDER_NAME}/node_modules/@swc`, {recursive: true}); /* always needed */
+	if (fs.existsSync(".next/standalone/node_modules/@swc")) {
+		fs.cpSync(".next/standalone/node_modules/@swc", `./${FOLDER_NAME}/node_modules/@swc`, {recursive: true}); /* always needed */
+	}
 	fs.cpSync(".next/standalone/node_modules/use-sync-external-store", `./${FOLDER_NAME}/node_modules/use-sync-external-store`, {recursive: true}); /* always needed */
-	fs.cpSync("./scripts/ui-function", `./${FOLDER_NAME}/function`, {recursive: true}); /* adds catch all {*api} route function app */
-	fs.cpSync("./scripts/root", `./${FOLDER_NAME}`, {recursive: true}); /* creates package.json for static-web-apps, host.json */
+	fs.cpSync(join("./scripts/ui-function"), `./${FOLDER_NAME}/function`, {recursive: true}); /* adds catch all {*api} route function app */
+	fs.cpSync(join("./scripts/root"), `./${FOLDER_NAME}`, {recursive: true}); /* creates package.json for static-web-apps, host.json */
 }

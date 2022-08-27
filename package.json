@@ -9,8 +9,9 @@
   "scripts": {
     "dev": "next dev",
     "next-build": "next build",
-    "build:package": "tsc --p tsconfig.package.json",
+    "build:package": "tsc --p tsconfig.package.json && node ./scripts/copy-scripts",
     "build": "next build",
+    "prepublishOnly": "node ./scripts/prepublish.js",
     "build-deploy": "npm run build && cd ./infra && pulumi up"
   },
   "repository": {

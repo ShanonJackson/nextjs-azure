@@ -6,3 +6,4 @@ dist/
 .idea/
 .next/
 .vercel
+.npmrc

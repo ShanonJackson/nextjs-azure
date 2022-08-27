@@ -16,6 +16,11 @@ const getDependenciesFor = (directory: string): string[] => {
 	})
 	return Array.from(dependencies);
 }
+
+const join = (relative: string) => {
+	return path.join(__dirname, relative);
+}
+
 export const buildPagesApi = () => {
 	if(fs.existsSync('./.next/standalone/.next/server/pages/api')) {
 		/* Gets all dependencies */
@@ -34,8 +39,8 @@ export const buildPagesApi = () => {
 			fs.readFileSync('./.next/standalone/.next/routes-manifest.json'),
 			'utf8',
 		);
-		fs.cpSync("./scripts/function", "./api/function", {recursive: true}); /* adds catch all {*api} route function app */
-		fs.cpSync("./scripts/root", "./api", {recursive: true}); /* creates package.json for static-web-apps, host.json */
+		fs.cpSync(join("./scripts/function"), "./api/function", {recursive: true}); /* adds catch all {*api} route function app */
+		fs.cpSync(join("./scripts/root"), "./api", {recursive: true}); /* creates package.json for static-web-apps, host.json */
 		/* END Gets all dependencies */
 
 		/* copies across raw files, the actual API endpoints */
