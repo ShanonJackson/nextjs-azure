@@ -1,6 +1,6 @@
 {
   "name": "nextjs-azure",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "bin/index.js",
   "bin": {
@@ -9,8 +9,8 @@
   "scripts": {
     "dev": "next dev",
     "next-build": "next build",
-    "build:package": "tsc",
-    "build": "next build && next export && ts-node ./src/azure && node ./scripts/swa-router.js",
+    "build:package": "tsc --p tsconfig.package.json",
+    "build": "next build",
     "build-deploy": "npm run build && cd ./infra && pulumi up"
   },
   "repository": {

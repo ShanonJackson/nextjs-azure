@@ -10,7 +10,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "outDir": "dist",
     "downlevelIteration": true,
     "allowJs": true,
     "skipLibCheck": true,

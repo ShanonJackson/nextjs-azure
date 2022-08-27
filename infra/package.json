@@ -14,5 +14,8 @@
     "@pulumi/pulumi": "latest",
     "@pulumi/random": "latest",
     "@types/node": "^18.6.3"
+  },
+  "dependencies": {
+    "fast-glob": "^3.2.11"
   }
 }

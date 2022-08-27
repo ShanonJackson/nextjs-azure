@@ -1,6 +1,6 @@
 import * as cdn from "@pulumi/azure-native/cdn/v20210601";
 import {frontdoor} from "./front-door";
-import {frontend} from "../web";
+import {frontend_url} from "../web";
 import {rg} from "../resource-group";
 import {ui_backend_origin_group} from "./ui-backend";
 import {api_backend_origin_group} from "./api-backend";
@@ -148,13 +148,13 @@ const frontend_origin_group = new cdn.AFDOriginGroup("frontend-origin-group", {
 
 const frontend_origin = new cdn.AFDOrigin("frontend-origin", {
 	originName: "frontend-origin",
-	hostName: frontend.defaultHostname,
+	hostName: frontend_url,
 	resourceGroupName: rg.name,
 	enabledState: "Enabled",
 	httpPort: 80,
 	httpsPort: 443,
 	originGroupName: frontend_origin_group.name,
-	originHostHeader: frontend.defaultHostname,
+	originHostHeader: frontend_url,
 	priority: 1,
 	weight: 1000,
 	profileName: frontdoor.name

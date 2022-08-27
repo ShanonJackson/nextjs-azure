@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "noEmit": false,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "incremental": false
+  },
+  "exclude": [
+    "node_modules",
+    "infra",
+    "pages"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.d.ts",
+    "**/*.tsx"
+  ]
+}

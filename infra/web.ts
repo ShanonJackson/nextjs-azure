@@ -1,8 +1,9 @@
 import * as pulumi from '@pulumi/pulumi';
 import {insights, storage, web} from "@pulumi/azure-native";
+import { Blob } from "@pulumi/azure/storage/blob";
 import {StorageUtils} from "./storage";
 import {rg} from "./resource-group";
-
+import glob from "fast-glob";
 
 const config = new pulumi.Config();
 const storageAccount = new storage.StorageAccount('sa', {
@@ -16,6 +17,7 @@ const storageAccount = new storage.StorageAccount('sa', {
 const codeContainer = new storage.BlobContainer('zips', {
 	resourceGroupName: rg.name,
 	accountName: storageAccount.name,
+
 });
 
 const uiBackendCode = new storage.Blob('ui-backend', {
@@ -42,21 +44,42 @@ const plan = new web.AppServicePlan('plan', {
 	reserved: true,
 });
 
-export const frontend = new web.StaticSite("nextjs-demo", {
-	buildProperties: {
-		appLocation: "out",
-	},
-	location: "West US 2",
-	name: "nextjs-demo",
-	repositoryToken: config.require("gh_token"),
-	repositoryUrl: "https://github.com/ShanonJackson/nextjs-azure",
-	branch: "main",
+const frontendStorage = new storage.StorageAccount("frontendsa", {
+	enableHttpsTrafficOnly: true,
+	kind: storage.Kind.StorageV2,
 	resourceGroupName: rg.name,
 	sku: {
-		name: "Standard",
-		tier: "Standard",
+		name: storage.SkuName.Standard_LRS,
 	},
 });
+
+const webstatic = new storage.StorageAccountStaticWebsite("staticwebsite", {
+	accountName: frontendStorage.name,
+	resourceGroupName: rg.name,
+	indexDocument: "index",
+	error404Document: "404",
+});
+export const frontend_url = frontendStorage.primaryEndpoints.apply(ep => ep.web.replace("https://", "").replace("/", ""));
+const files = glob.sync("../out/**/*").map((f) => {
+	const sanitized = f.replace("../out/", "").replace(".html", "");
+	const contentType = (() => {
+		if(f.endsWith(".js")) return "text/javascript";
+		if(f.endsWith(".html")) return "text/html";
+		if(f.endsWith(".css")) return "text/css";
+		return undefined;
+	})();
+	return new Blob(sanitized, {
+		name: sanitized,
+		type: "Block",
+		cacheControl: contentType === "text/html" ? "public, must-revalidate, max-age=30" : "public, max-age=604800, immutable",
+		storageAccountName: frontendStorage.name,
+		storageContainerName: webstatic.containerName,
+		source: new pulumi.asset.FileAsset(f),
+		contentType
+	});
+})
+
+
 
 const uiBackendAi = new insights.Component('ai', {
 	resourceGroupName: rg.name,
@@ -115,4 +138,4 @@ export const apiBackend = new web.WebApp('api-backend', {
 
 
 
-export const url = frontend.defaultHostname;
+export const url = frontend_url;

@@ -2,5 +2,7 @@ out/
 node_modules/
 api/
 ui-backend/
+dist/
 .idea/
 .next/
+.vercel

@@ -1,2 +1,2 @@
 #! /usr/bin/env node
-console.log("Hello, World!");
+require("../dist/index").build();

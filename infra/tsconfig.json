@@ -4,6 +4,7 @@
         "outDir": "bin",
         "target": "es2016",
         "module": "commonjs",
+        "esModuleInterop": true,
         "moduleResolution": "node",
         "sourceMap": true,
         "experimentalDecorators": true,
