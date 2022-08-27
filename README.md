@@ -31,15 +31,16 @@ The build output should generate 3 folders:
 
 
 You are responsible for routing depending on which respective Azure services you use. The following routers are coming in the following priority order:
-1. static-web-apps-router
-2.  apim-router
+1. Azure Front Door
+2. APIM Router
+3. SWA Router
 
 ### Deployment
 You are responsible for deployment, the recommendation would be to use IAC which is a technique to make infrastructure part of your git workflow.
 The following IAC setups are coming in the following priority order:
 
-1. pulumi
-2. terraform
+1. Pulumi
+2. Terraform - This is a long time away as we need to create a dynamic number of a certain resource for front door which isn't well-supported on .tf
 
 
 ### Goals
