@@ -6,8 +6,18 @@ Currently, this library is **NOT** production ready. I use this library for my p
 I'm in the process of making this production ready as fast as possible.
 
 ```ts
-npm i nextjs-azure
-npx nextjs-azure
+// please make sure your next.config.js contains the entry module.exports = {output: "standalone"}
+npm i --save-dev nextjs-azure
+npx next build && npx next export && npx next-azure
+```
+To deploy we would highly recommend using our infrastructure as code via pulumi, we have a /infra folder you can copy which will
+deploy everything to best-practice resulting in a setup 30%-50% faster than vercel.
+
+I'm in the process of documenting this infrastructure
+```ts
+cd ./node_modules/nextjs-azure/infra
+yarn
+pulumi up
 ```
 
 
