@@ -13,19 +13,12 @@ npx next build && npx next export && npx next-azure
 To deploy we would highly recommend using our infrastructure as code via pulumi, we have a /infra folder you can copy which will
 deploy everything to best-practice resulting in a setup 30%-50% faster than vercel.
 
-I'm in the process of documenting this infrastructure
-```ts
-cd ./node_modules/nextjs-azure/infra
-yarn
-pulumi up
-```
-
-
 ### Features
-- ✅ getInitialProps
-- ✅ getServerSideProps
-- ✅ getStaticProps
-- ✅ /pages/api
+- ✅ getInitialProps [full support]
+- ✅ /pages/api [full support]
+- ✅ getServerSideProps [partial support, full coming]
+- ✅ getStaticProps [assumed support]
+- 🚧 Documentation [Coming soon]
 - 🚧 _middleware [refer to roadmap]
 - 🚧 Image optimization [refer to roadmap]
 - 🚧 Rewrites/Redirects [refer to roadmap]
@@ -34,8 +27,7 @@ pulumi up
 - ❓ Localization [refer to roadmap, support = unknown]
 - ❓ AMP [refer to roadmap, support = unknown]
 
-The build output should generate 3 folders:
-- ./out - The frontend folder, this contains all the pre-rendered HTML pages.
+The build (npx nextjs-azure) output should generate 3 folders:
 - ./api - This is your pages/api folder if you're running NextJS full stack, this contains your code wrapped in an Azure compatibility function signature.
 - ./ui-backend - This contains all the backend functions and code to render your UI pages on the server if you're using getInitialProps.
 

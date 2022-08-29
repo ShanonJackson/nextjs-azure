@@ -8,7 +8,7 @@ export default function Page({hello}: {hello: number}) {
 	)
 }
 
-export const getServerSideProps = () => {
+Page.getInitialProps = () => {
 	return {
 		props: {
 			hello: "users/[id] getServerSideProps"

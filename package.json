@@ -1,6 +1,6 @@
 {
   "name": "nextjs-azure",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "bin/index.js",
   "bin": {
@@ -10,7 +10,7 @@
     "dev": "next dev",
     "next-build": "next build",
     "build:package": "tsc --p tsconfig.package.json && node ./src/scripts/copy-scripts",
-    "build": "next build",
+    "build": "next build && next export && ts-node ./src/build",
     "prepublishOnly": "node ./src/scripts/prepublish.js",
     "build-deploy": "npm run build && ts-node ./src/build && cd ./infra && pulumi up"
   },
