@@ -31,6 +31,9 @@ The build (npx nextjs-azure) output should generate 3 folders:
 - ./api - This is your pages/api folder if you're running NextJS full stack, this contains your code wrapped in an Azure compatibility function signature.
 - ./ui-backend - This contains all the backend functions and code to render your UI pages on the server if you're using getInitialProps.
 
+#### Architecture (Using our infra)
+![image](https://user-images.githubusercontent.com/13631026/187052156-2d13fec5-91a2-43d1-bb00-6fdb89ca3273.png)
+
 
 You are responsible for routing depending on which respective Azure services you use. The following routers are coming in the following priority order:
 1. Azure Front Door
