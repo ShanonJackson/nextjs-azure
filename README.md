@@ -5,13 +5,8 @@ The overarching goal of this library is to give you the best possible experience
 Currently, this library is **NOT** production ready. I use this library for my pages/api folder across 3-4 of our projects but I do not use any getInitialProps/getStaticProps, etc.
 I'm in the process of making this production ready as fast as possible.
 
-```ts
-// please make sure your next.config.js contains the entry module.exports = {output: "standalone"}
-npm i --save-dev nextjs-azure
-npx next build && npx next export && npx next-azure
-```
 To deploy we would highly recommend using our infrastructure as code via pulumi, we have a /infra folder you can copy which will
-deploy everything to best-practice resulting in a setup 30%-50% faster than vercel.
+deploy everything (close) to best-practice resulting in a setup 30%-50% faster than vercel.
 
 ### Features
 - ✅ getInitialProps [full support]
